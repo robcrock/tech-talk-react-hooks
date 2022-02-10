@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react"
+import "./App.css"
+import Header from "./components/Header"
+import Chart from "./components/Chart"
+
+export const ThemeContext = React.createContext({})
 
 function App() {
+  const [theme, setTheme] = useState("dark")
+
+  const appStyle = {
+    dark: {
+      backgroundColor: "#1d1d1d",
+      color: "white",
+    },
+    light: {
+      backgroundColor: "#fcfcfc",
+      color: "black",
+    },
+    common: {
+      transition: "all 1s ease",
+      height: "100vh",
+      width: "100vw",
+    },
+  }
+
+  const themeStyle = {
+    ...(theme === "light" ? appStyle.light : appStyle.dark),
+    ...appStyle.common,
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div style={themeStyle}>
+        <Header />
+        <Chart />
+      </div>
+    </ThemeContext.Provider>
+  )
 }
 
-export default App;
+export default App
